@@ -100,6 +100,14 @@ export default function RedisDashboard() {
     setIsCreatingDatabase(true)
 
     setTimeout(() => {
+      setIsCreatingDatabase(false)
+    }, 2000)
+  }
+
+  const handleSaveConfiguration = async () => {
+    setIsCreatingDatabase(true)
+
+    setTimeout(() => {
       const newDatabase = {
         name: `langcache-db-${Date.now()}`,
         id: `db-${Date.now()}`,
@@ -111,17 +119,6 @@ export default function RedisDashboard() {
       setSelectedDatabase(newDatabase.id)
       setShowNewDatabaseFields(false)
       setIsCreatingDatabase(false)
-    }, 2000)
-  }
-
-  const handleSaveConfiguration = async () => {
-    setIsCreatingDatabase(true)
-
-    setTimeout(() => {
-      // For now, just reset the loading state
-      // In real implementation, this would save the configuration
-      setIsCreatingDatabase(false)
-      alert("Configuration saved! You can now proceed with payment and database creation.")
     }, 1500)
   }
 
@@ -262,26 +259,6 @@ export default function RedisDashboard() {
         {/* Content */}
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-4xl space-y-6">
-            {createdDatabase && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <div className="flex items-center gap-2 text-green-800">
-                  <Database className="w-5 h-5" />
-                  <span className="font-medium">Database created successfully!</span>
-                </div>
-                <p className="text-green-700 text-sm mt-1">
-                  Your database "{createdDatabase.name}" is now ready to use.{" "}
-                  <a
-                    href={createdDatabase.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:no-underline"
-                  >
-                    View database →
-                  </a>
-                </p>
-              </div>
-            )}
-
             <Card>
               <CardHeader>
                 <CardTitle>General Settings</CardTitle>
@@ -496,7 +473,7 @@ export default function RedisDashboard() {
 
                       {(selectedPlan === "free" || (selectedPlan !== "free" && selectedDatabaseSize)) && (
                         <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-3 mb-6">
-                          <h4 className="text-sm font-medium text-gray-900">Pricing Breakdown</h4>
+                          <h4 className="text-sm font-medium text-gray-900">Database Pricing</h4>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
                               <span>
@@ -513,49 +490,6 @@ export default function RedisDashboard() {
                                 /hr
                               </span>
                             </div>
-                            <div className="flex justify-between">
-                              <span>LangCache Service</span>
-                              <span className="text-green-600">$0.000/hr (Public Preview)</span>
-                            </div>
-                            <Separator />
-                            <div className="flex justify-between font-medium">
-                              <span>Total Price</span>
-                              <div className="text-right">
-                                <div className={selectedPlan === "free" ? "text-green-600" : ""}>
-                                  $
-                                  {selectedPlan === "free"
-                                    ? "0.000"
-                                    : selectedDatabaseSize
-                                      ? calculatePricing(selectedDatabaseSize).hourly.toFixed(3)
-                                      : "0.000"}
-                                  /hr
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  ($
-                                  {selectedPlan === "free"
-                                    ? "0"
-                                    : selectedDatabaseSize
-                                      ? calculatePricing(selectedDatabaseSize).monthly
-                                      : "0"}
-                                  /mo)
-                                </div>
-                              </div>
-                            </div>
-                            {selectedPlan !== "free" && (
-                              <>
-                                <Separator />
-                                <div className="space-y-2">
-                                  <div className="text-xs text-gray-500">
-                                    *Price excludes taxes and monthly network charges, which are billed separately.
-                                  </div>
-                                  <div className="text-center">
-                                    <a href="#" className="text-blue-600 text-xs hover:underline">
-                                      Have a coupon code? Click here
-                                    </a>
-                                  </div>
-                                </div>
-                              </>
-                            )}
                           </div>
                         </div>
                       )}
@@ -582,10 +516,8 @@ export default function RedisDashboard() {
                               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                               Saving Configuration...
                             </>
-                          ) : selectedPlan === "free" ? (
-                            "Create Free Database"
                           ) : (
-                            "Continue to Payment"
+                            "Save Configuration"
                           )}
                         </Button>
                       </div>
@@ -700,63 +632,113 @@ export default function RedisDashboard() {
               </CardContent>
             </Card>
 
-            {/* Pricing Section */}
-            <div className="bg-gray-50 rounded-lg p-3 space-y-2 mt-4">
-              <div className="flex justify-between text-sm">
-                <span>Database ({selectedPlan === "free" ? "30 MB" : selectedDatabaseSize?.toUpperCase() || ""})</span>
-                <span className={selectedPlan === "free" ? "text-green-600" : ""}>
-                  $
-                  {selectedPlan === "free"
-                    ? "0.000"
-                    : selectedDatabaseSize
-                      ? calculatePricing(selectedDatabaseSize).hourly.toFixed(3)
-                      : "0.000"}
-                  /hr
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>LangCache Service</span>
-                <span className="text-green-600">$0.000/hr (Public Preview)</span>
-              </div>
-              <Separator />
-              <div className="flex justify-between text-sm font-medium">
-                <span>Total Price</span>
-                <span className={selectedPlan === "free" ? "text-green-600" : ""}>
-                  $
-                  {selectedPlan === "free"
-                    ? "0.000"
-                    : selectedDatabaseSize
-                      ? calculatePricing(selectedDatabaseSize).hourly.toFixed(3)
-                      : "0.000"}
-                  /hr
-                </span>
-              </div>
-              <div className="text-right text-xs text-gray-500">
-                ($
-                {selectedPlan === "free"
-                  ? "0"
-                  : selectedDatabaseSize
-                    ? calculatePricing(selectedDatabaseSize).monthly
-                    : "0"}
-                /mo)
-              </div>
-              {selectedPlan === "free" && (
-                <div className="text-center">
-                  <span className="text-xs text-gray-500">No payment required</span>
-                </div>
-              )}
-              {selectedPlan !== "free" && (
-                <div className="text-center">
-                  <a href="#" className="text-blue-600 text-xs hover:underline">
-                    Have a coupon code? Click here
-                  </a>
-                </div>
-              )}
-            </div>
+            {/* Moved free database pricing to appear after Attributes card */}
+            {selectedPlan === "free" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Pricing</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-sm">
+                      <span>Database (30 MB)</span>
+                      <span className="text-green-600">$0.000/hr</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>LangCache Service</span>
+                      <span className="text-green-600">$0.00/Million Input Tokens (Public Preview)</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Combined Payment and Pricing Section */}
+            {(selectedPlan === "essentials" || selectedPlan === "pro") && selectedDatabaseSize && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Payment</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-6">
+                    {/* Left side - Payment Method */}
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-sm font-medium">Payment method</Label>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Select>
+                            <SelectTrigger className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <CreditCard className="w-4 h-4" />
+                                <span>•••• •••• •••• 3825 2/28</span>
+                              </div>
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="card-3825">•••• •••• •••• 3825 2/28</SelectItem>
+                              <SelectItem value="add-new">Add new payment method</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button size="sm" variant="outline" className="px-3 bg-transparent">
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        *Price excludes taxes and monthly network charges, which are billed separately.
+                      </div>
+                    </div>
+
+                    {/* Right side - Plan and Pricing */}
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-sm font-medium mb-2">Plan</div>
+                        <div>
+                          <div className="font-medium">{selectedPlan === "essentials" ? "Essentials" : "Pro"}</div>
+                          <div className="text-sm text-gray-600">{selectedDatabaseSize?.toUpperCase()} Database</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between text-sm">
+                          <span>Database ({selectedDatabaseSize?.toUpperCase()})</span>
+                          <span>
+                            ${selectedDatabaseSize ? calculatePricing(selectedDatabaseSize).hourly.toFixed(3) : "0.000"}
+                            /hr
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span>LangCache Service</span>
+                          <span className="text-green-600">$0.00/Million Input Tokens (Public Preview)</span>
+                        </div>
+                        <Separator />
+                        <div className="text-center pt-2">
+                          <a href="#" className="text-blue-600 text-xs hover:underline">
+                            Have a coupon code? Click here
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             <div className="flex justify-between pt-4">
               <Button variant="outline">Cancel</Button>
-              <Button className="bg-gray-900 hover:bg-gray-800 text-white">Create</Button>
+              <Button
+                className="bg-gray-900 hover:bg-gray-800 text-white"
+                onClick={handleCreateDatabase}
+                disabled={isCreatingDatabase}
+              >
+                {isCreatingDatabase ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Creating Service...
+                  </>
+                ) : (
+                  "Create"
+                )}
+              </Button>
             </div>
           </div>
         </main>
