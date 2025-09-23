@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { SearchableSelect } from "@/components/ui/searchable-select"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -283,16 +282,63 @@ export default function RedisDashboard() {
                         <Info className="w-4 h-4 text-gray-400" />
                       </div>
                       <div className="relative">
-                        <SearchableSelect
+                        <Select
                           value={selectedDatabase}
                           onValueChange={(value) => {
                             setSelectedDatabase(value)
                             setShowNewDatabaseFields(value === "create-new")
                           }}
-                          placeholder="Search databases or create new..."
-                          options={databaseOptions}
-                          className="w-full"
-                        />
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Search databases or create new..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="create-new">
+                              <div className="flex items-center gap-2">
+                                <Plus className="w-4 h-4 text-blue-600" />
+                                <span>Create new database</span>
+                              </div>
+                            </SelectItem>
+                            {createdDatabase && (
+                              <SelectItem value={createdDatabase.id}>
+                                <div className="flex items-center gap-2">
+                                  <Database className="w-4 h-4 text-green-600" />
+                                  <span>{createdDatabase.name}</span>
+                                </div>
+                              </SelectItem>
+                            )}
+                            <SelectItem value="db1">
+                              <div className="flex items-center gap-2">
+                                <Database className="w-4 h-4 text-gray-500" />
+                                <span>my-production-db</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="db2">
+                              <div className="flex items-center gap-2">
+                                <Database className="w-4 h-4 text-gray-500" />
+                                <span>my-staging-db</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="db3">
+                              <div className="flex items-center gap-2">
+                                <Database className="w-4 h-4 text-gray-500" />
+                                <span>my-development-db</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="db4">
+                              <div className="flex items-center gap-2">
+                                <Database className="w-4 h-4 text-gray-500" />
+                                <span>analytics-cache-db</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="db5">
+                              <div className="flex items-center gap-2">
+                                <Database className="w-4 h-4 text-gray-500" />
+                                <span>user-session-db</span>
+                              </div>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </div>
