@@ -282,219 +282,140 @@ export default function RedisDashboard() {
                         <Label className="text-sm font-medium text-red-600">* Select or Create Database</Label>
                         <Info className="w-4 h-4 text-gray-400" />
                       </div>
-                      <SearchableSelect
-                        value={selectedDatabase}
-                        onValueChange={(value) => {
-                          setSelectedDatabase(value)
-                          setShowNewDatabaseFields(value === "create-new")
-                        }}
-                        placeholder="Search databases or create new..."
-                        options={databaseOptions}
-                        className="w-full"
-                      />
+                      <div className="relative">
+                        <SearchableSelect
+                          value={selectedDatabase}
+                          onValueChange={(value) => {
+                            setSelectedDatabase(value)
+                            setShowNewDatabaseFields(value === "create-new")
+                          }}
+                          placeholder="Search databases or create new..."
+                          options={databaseOptions}
+                          className="w-full"
+                        />
+                      </div>
                     </div>
                   </div>
 
                   {showNewDatabaseFields && (
-                    <div className="mt-6 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="mt-6 p-6 bg-blue-50 rounded-lg border border-blue-200 relative">
                       <div className="flex items-center justify-between mb-6">
                         <h3 className="text-lg font-semibold">Configure your new database for LangCache</h3>
                       </div>
 
-                      <div className="mb-6">
-                        <div className="flex gap-2 mb-6">
-                          <Button
-                            size="sm"
-                            className={
-                              subscriptionType === "new" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700"
-                            }
-                            onClick={() => setSubscriptionType("new")}
-                          >
-                            New subscription
-                          </Button>
-                          <Button
-                            size="sm"
-                            className={
-                              subscriptionType === "existing" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700"
-                            }
-                            onClick={() => setSubscriptionType("existing")}
-                          >
-                            Existing Subscription
-                          </Button>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Label className="text-sm font-medium text-red-600">* Subscription Plan</Label>
+                            <a
+                              href="https://redis.io/pricing/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 text-sm hover:underline flex items-center"
+                            >
+                              View pricing plans ↗
+                            </a>
+                          </div>
+                          <Select value={selectedPlan} onValueChange={setSelectedPlan}>
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select a plan" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="free">
+                                <div className="flex flex-col">
+                                  <span className="font-medium">Free - $0/month</span>
+                                  <span className="text-xs text-gray-500">Shared cloud deployment • Up to 30 MB</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="essentials">
+                                <div className="flex flex-col">
+                                  <span className="font-medium">Essentials</span>
+                                  <span className="text-xs text-gray-500">
+                                    Shared cloud deployment • Up to 12 GB RAM
+                                  </span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="pro">
+                                <div className="flex flex-col">
+                                  <span className="font-medium">Pro</span>
+                                  <span className="text-xs text-gray-500">
+                                    Dedicated cloud deployment • 6+ GB RAM, multi-region
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
 
-                        {subscriptionType === "new" ? (
-                          <div className="space-y-3">
-                            <div>
-                              <div className="flex items-center justify-between">
-                                <Label className="text-sm font-medium text-red-600">* Subscription Plan</Label>
-                                <a
-                                  href="https://redis.io/pricing/"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 text-sm hover:underline flex items-center"
-                                >
-                                  View pricing plans ↗
-                                </a>
-                              </div>
-                              <Select value={selectedPlan} onValueChange={setSelectedPlan}>
-                                <SelectTrigger className="mt-1">
-                                  <SelectValue placeholder="Select a plan" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="free">
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">Free - $0/month</span>
-                                      <span className="text-xs text-gray-500">
-                                        Shared cloud deployment • Up to 30 MB
-                                      </span>
-                                    </div>
-                                  </SelectItem>
-                                  <SelectItem value="essentials">
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">Essentials</span>
-                                      <span className="text-xs text-gray-500">
-                                        Shared cloud deployment • Up to 12 GB RAM
-                                      </span>
-                                    </div>
-                                  </SelectItem>
-                                  <SelectItem value="pro">
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">Pro</span>
-                                      <span className="text-xs text-gray-500">
-                                        Dedicated cloud deployment • 6+ GB RAM, multi-region
-                                      </span>
-                                    </div>
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-3">
-                              <div>
-                                <Label className="text-sm font-medium text-red-600">* Database Name</Label>
-                                <Input placeholder="database-MPXVNTHO" className="mt-1" />
-                              </div>
-                              <div>
-                                <Label className="text-sm font-medium text-red-600">* Cloud vendor</Label>
-                                <Select>
-                                  <SelectTrigger className="mt-1">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-4 h-4 bg-orange-500 rounded text-white text-xs flex items-center justify-center font-bold">
-                                        aws
-                                      </div>
-                                      <span>Amazon Web Services</span>
-                                    </div>
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="aws">Amazon Web Services</SelectItem>
-                                    <SelectItem value="gcp">Google Cloud Platform</SelectItem>
-                                    <SelectItem value="azure">Microsoft Azure</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-3">
-                              <div>
-                                <Label className="text-sm font-medium text-red-600">* Region</Label>
-                                <Select>
-                                  <SelectTrigger className="mt-1">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-4 h-4 bg-blue-600 rounded"></div>
-                                      <span>US East (N. Virginia) us-east-1</span>
-                                    </div>
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="us-east-1">US East (N. Virginia) us-east-1</SelectItem>
-                                    <SelectItem value="us-west-2">US West (Oregon) us-west-2</SelectItem>
-                                    <SelectItem value="eu-west-1">Europe (Ireland) eu-west-1</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                              {selectedPlan === "free" && (
-                                <div>
-                                  <Label className="text-sm font-medium text-red-600">* Database Size</Label>
-                                  <Input value="30 MB" disabled className="mt-1 bg-gray-100" />
-                                </div>
-                              )}
-                              {selectedPlan !== "free" && selectedPlan && (
-                                <div>
-                                  <Label className="text-sm font-medium text-red-600">* Database Size</Label>
-                                  <Select value={selectedDatabaseSize} onValueChange={setSelectedDatabaseSize}>
-                                    <SelectTrigger className="mt-1">
-                                      <SelectValue placeholder="Select size" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="250mb">250 MB</SelectItem>
-                                      <SelectItem value="1gb">1 GB</SelectItem>
-                                      <SelectItem value="2.5gb">2.5 GB</SelectItem>
-                                      <SelectItem value="5gb">5 GB</SelectItem>
-                                      <SelectItem value="12gb">12 GB</SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                              )}
-                            </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <Label className="text-sm font-medium text-red-600">* Database Name</Label>
+                            <Input placeholder="database-MPXVNTHO" className="mt-1" />
                           </div>
-                        ) : (
-                          <div className="space-y-4">
-                            <div>
-                              <Label className="text-sm font-medium">* Subscription</Label>
-                              <Select>
-                                <SelectTrigger>
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-4 h-4 bg-orange-500 rounded text-white text-xs flex items-center justify-center font-bold">
-                                      G
-                                    </div>
-                                    <span>GCP-PERF-ENTERPRISE-DB-DONOTDELETE us-central1</span>
+                          <div>
+                            <Label className="text-sm font-medium text-red-600">* Cloud vendor</Label>
+                            <Select>
+                              <SelectTrigger className="mt-1">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 bg-orange-500 rounded text-white text-xs flex items-center justify-center font-bold">
+                                    aws
                                   </div>
+                                  <span>Amazon Web Services</span>
+                                </div>
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="aws">Amazon Web Services</SelectItem>
+                                <SelectItem value="gcp">Google Cloud Platform</SelectItem>
+                                <SelectItem value="azure">Microsoft Azure</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <Label className="text-sm font-medium text-red-600">* Region</Label>
+                            <Select>
+                              <SelectTrigger>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 bg-blue-600 rounded"></div>
+                                  <span>US East (N. Virginia) us-east-1</span>
+                                </div>
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="us-east-1">US East (N. Virginia) us-east-1</SelectItem>
+                                <SelectItem value="us-west-2">US West (Oregon) us-west-2</SelectItem>
+                                <SelectItem value="eu-west-1">Europe (Ireland) eu-west-1</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          {selectedPlan === "free" && (
+                            <div>
+                              <Label className="text-sm font-medium text-red-600">* Database Size</Label>
+                              <Input value="30 MB" disabled className="mt-1 bg-gray-100" />
+                            </div>
+                          )}
+                          {selectedPlan !== "free" && selectedPlan && (
+                            <div>
+                              <Label className="text-sm font-medium text-red-600">* Database Size</Label>
+                              <Select value={selectedDatabaseSize} onValueChange={setSelectedDatabaseSize}>
+                                <SelectTrigger className="mt-1">
+                                  <SelectValue placeholder="Select size" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="gcp-enterprise">
-                                    GCP-PERF-ENTERPRISE-DB-DONOTDELETE us-central1
-                                  </SelectItem>
-                                  <SelectItem value="aws-prod">AWS-PROD-SUBSCRIPTION us-east-1</SelectItem>
-                                  <SelectItem value="azure-dev">AZURE-DEV-SUBSCRIPTION eu-west-1</SelectItem>
+                                  <SelectItem value="250mb">250 MB</SelectItem>
+                                  <SelectItem value="1gb">1 GB</SelectItem>
+                                  <SelectItem value="2.5gb">2.5 GB</SelectItem>
+                                  <SelectItem value="5gb">5 GB</SelectItem>
+                                  <SelectItem value="12gb">12 GB</SelectItem>
                                 </SelectContent>
                               </Select>
-                              <p className="text-xs text-blue-600 mt-1">
-                                New database can be added to Pro subscriptions only.
-                              </p>
                             </div>
-
-                            <div>
-                              <Label className="text-sm font-medium">* Database Name</Label>
-                              <Input placeholder="database-MPXVNTHO" className="mt-1" />
-                            </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
 
-                      {(selectedPlan === "free" || (selectedPlan !== "free" && selectedDatabaseSize)) && (
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-3 mb-6">
-                          <h4 className="text-sm font-medium text-gray-900">Database Pricing</h4>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span>
-                                Database (
-                                {selectedPlan === "free" ? "30 MB" : selectedDatabaseSize?.toUpperCase() || ""})
-                              </span>
-                              <span className={selectedPlan === "free" ? "text-green-600" : ""}>
-                                $
-                                {selectedPlan === "free"
-                                  ? "0.000"
-                                  : selectedDatabaseSize
-                                    ? calculatePricing(selectedDatabaseSize).hourly.toFixed(3)
-                                    : "0.000"}
-                                /hr
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex justify-end gap-3 pt-4 border-t border-blue-200">
+                      <div className="flex justify-end gap-3 pt-4 border-t border-blue-200 relative">
                         <Button
                           variant="outline"
                           onClick={() => setShowNewDatabaseFields(false)}
@@ -723,7 +644,7 @@ export default function RedisDashboard() {
               </Card>
             )}
 
-            <div className="flex justify-between pt-4">
+            <div className="flex justify-between pt-4 relative">
               <Button variant="outline">Cancel</Button>
               <Button
                 className="bg-gray-900 hover:bg-gray-800 text-white"
