@@ -19,8 +19,12 @@ export default function EmailActivation() {
         <div className="w-full max-w-7xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">Choose Your User Journey:</h3>
-            <p className="text-lg text-gray-600">Click on either email to experience different UX flows</p>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">We need to pick Option 1 or Option 2 for what happens when user clicks on Activate button</h3>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-4xl mx-auto">
+              <p className="text-lg text-blue-800 font-medium">
+                <strong>The advantage of Option 1</strong> is that it will land into more intentional cache creation and giving user the choice if they want to configure additional settings along with one click setup
+              </p>
+            </div>
           </div>
 
           {/* Two Email Options Side by Side */}
