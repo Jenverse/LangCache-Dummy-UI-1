@@ -14,32 +14,107 @@ export default function SSOContinue() {
         </p>
       </div>
 
-      {/* Centered SSO Continue Image with Overlay Button */}
-      <div className="flex justify-center items-center py-6 px-4">
-        <div className="relative max-w-6xl w-full">
-          {/* The SSO Continue image - properly sized */}
-          <img 
-            src="/images/SSO Continue.png" 
-            alt="SSO Continue Screen"
-            className="w-full h-auto rounded-lg shadow-xl border border-gray-200"
-          />
-          
-          {/* Continue Button - positioned over the continue button in the image */}
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20">
-            <Link href="/dashboard?flow=quick-create">
-              <Button 
-                size="lg" 
-                className="bg-red-600 text-white border-4 border-white hover:bg-red-700 hover:scale-105 shadow-2xl font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300"
-              >
-                🚀 Continue
-                <ArrowRight className="ml-2 h-6 w-6" />
-              </Button>
-            </Link>
+      {/* Two SSO Continue Images Side by Side */}
+      <div className="flex justify-center items-center min-h-screen p-8">
+        <div className="w-full max-w-7xl">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">We need to pick Option 1 or Option 2 for what happens when user clicks on Continue button</h3>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-4xl mx-auto">
+              <p className="text-lg text-blue-800 font-medium">
+                <strong>The advantage of Option 1</strong> is that it will land into more intentional cache creation and giving user the choice if they want to configure additional settings along with one click setup
+              </p>
+            </div>
           </div>
 
-          {/* Pulsing animation overlay to make button more noticeable */}
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10">
-            <div className="w-32 h-16 bg-red-500 opacity-20 rounded-xl animate-pulse"></div>
+          {/* Two SSO Continue Options Side by Side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            {/* Option 1: Landing Page + One-Click Creation (Left Side) */}
+            <div className="relative">
+              <div className="bg-blue-50 border-4 border-blue-500 rounded-xl p-6 shadow-xl">
+                <div className="text-center mb-4">
+                  <h4 className="text-xl font-bold text-blue-700 mb-2">Option 1: Landing Page + One-Click Creation</h4>
+                  <p className="text-blue-600 font-medium">User chooses to create</p>
+                </div>
+
+                <Link href="/dashboard">
+                  <div className="relative cursor-pointer hover:scale-105 transition-all duration-300">
+                    <img
+                      src="/images/SSO Continue.png"
+                      alt="SSO Continue Screen - Option 1"
+                      className="w-full h-auto rounded-lg shadow-lg border border-blue-200"
+                    />
+
+                    {/* Continue Button Overlay */}
+                    <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20">
+                      <Button
+                        size="lg"
+                        className="bg-blue-600 text-white border-4 border-white hover:bg-blue-700 hover:scale-105 shadow-2xl font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300"
+                      >
+                        🚀 Continue (Option 1)
+                        <ArrowRight className="ml-2 h-6 w-6" />
+                      </Button>
+                    </div>
+                  </div>
+                </Link>
+
+                <div className="mt-4 bg-blue-100 rounded-lg p-3">
+                  <p className="text-sm text-blue-800 text-center">
+                    Go to dashboard with Quick Create and Customize Create options
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Option 2: Auto-Create LangCache (Right Side) */}
+            <div className="relative">
+              <div className="bg-green-50 border-4 border-green-500 rounded-xl p-6 shadow-xl">
+                <div className="text-center mb-4">
+                  <h4 className="text-xl font-bold text-green-700 mb-2">Option 2: Auto-Create LangCache</h4>
+                  <p className="text-green-600 font-medium">Auto-provisioned</p>
+                </div>
+
+                <Link href="/dashboard?flow=quick-create">
+                  <div className="relative cursor-pointer hover:scale-105 transition-all duration-300">
+                    <img
+                      src="/images/SSO Continue.png"
+                      alt="SSO Continue Screen - Option 2"
+                      className="w-full h-auto rounded-lg shadow-lg border border-green-200"
+                    />
+
+                    {/* Continue Button Overlay */}
+                    <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20">
+                      <Button
+                        size="lg"
+                        className="bg-green-600 text-white border-4 border-white hover:bg-green-700 hover:scale-105 shadow-2xl font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300"
+                      >
+                        🚀 Continue (Option 2)
+                        <ArrowRight className="ml-2 h-6 w-6" />
+                      </Button>
+                    </div>
+                  </div>
+                </Link>
+
+                <div className="mt-4 bg-green-100 rounded-lg p-3">
+                  <p className="text-sm text-green-800 text-center">
+                    Directly start the service creation process (current continue flow)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Back to SSO Button */}
+          <div className="text-center mt-8">
+            <Button
+              variant="outline"
+              size="lg"
+              className="bg-white border-gray-300 text-gray-600 hover:bg-gray-50 px-8 py-3"
+              onClick={() => window.location.reload()}
+            >
+              ↻ Back to SSO (Try Both Flows)
+            </Button>
           </div>
         </div>
       </div>
