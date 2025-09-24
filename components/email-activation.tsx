@@ -14,72 +14,103 @@ export default function EmailActivation() {
         </p>
       </div>
 
-      {/* Centered Email Image with Overlay Button */}
+      {/* Two Email Images Side by Side */}
       <div className="flex justify-center items-center min-h-screen p-8">
-        <div className="relative max-w-2xl w-full">
-          {/* The Email Activation image - much smaller */}
-          <img
-            src="/images/Activiation Email.png"
-            alt="Redis Activation Email"
-            className="w-full h-auto rounded-lg shadow-xl border border-gray-200"
-          />
+        <div className="w-full max-w-7xl">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">Choose Your User Journey:</h3>
+            <p className="text-lg text-gray-600">Click on either email to experience different UX flows</p>
+          </div>
 
-          {/* Two Path Options - positioned over the email button */}
-          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-20 w-full max-w-4xl">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Choose Your User Journey:</h3>
-              <p className="text-gray-600">Click on either path to experience different UX flows</p>
-            </div>
+          {/* Two Email Options Side by Side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
-              {/* Option 1: Landing Page + One-Click Creation */}
-              <div className="bg-white rounded-xl shadow-xl border-4 border-blue-500 p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            {/* Option 1: Landing Page + One-Click Creation (Left Side) */}
+            <div className="relative">
+              <div className="bg-blue-50 border-4 border-blue-500 rounded-xl p-6 shadow-xl">
+                <div className="text-center mb-4">
+                  <h4 className="text-xl font-bold text-blue-700 mb-2">Option 1: Landing Page + One-Click Creation</h4>
+                  <p className="text-blue-600 font-medium">User chooses to create</p>
+                </div>
+
                 <Link href="/dashboard">
-                  <div className="cursor-pointer">
-                    <div className="flex items-center justify-center mb-4">
-                      <div className="bg-blue-500 text-white rounded-full p-3 mr-3">
-                        <ArrowRight className="h-6 w-6" />
-                      </div>
-                      <h4 className="text-lg font-bold text-blue-700">Landing Page + One-Click Creation</h4>
-                    </div>
-                    <p className="text-sm text-gray-600 text-center mb-3">User chooses to create</p>
-                    <div className="bg-blue-50 rounded-lg p-3 text-xs text-blue-800">
-                      Go to dashboard with Quick Create and Customize Create options
+                  <div className="relative cursor-pointer hover:scale-105 transition-all duration-300">
+                    <img
+                      src="/images/Activiation Email.png"
+                      alt="Redis Activation Email - Option 1"
+                      className="w-full h-auto rounded-lg shadow-lg border border-blue-200"
+                    />
+
+                    {/* Activate Button Overlay */}
+                    <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20">
+                      <Button
+                        size="lg"
+                        className="bg-blue-600 text-white border-4 border-white hover:bg-blue-700 hover:scale-105 shadow-2xl font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300"
+                      >
+                        🚀 Activate Account (Option 1)
+                        <ArrowRight className="ml-2 h-6 w-6" />
+                      </Button>
                     </div>
                   </div>
                 </Link>
-              </div>
 
-              {/* Option 2: Auto-Create LangCache (Current Activate Account Flow) */}
-              <div className="bg-white rounded-xl shadow-xl border-4 border-green-500 p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                <div className="mt-4 bg-blue-100 rounded-lg p-3">
+                  <p className="text-sm text-blue-800 text-center">
+                    Go to dashboard with Quick Create and Customize Create options
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Option 2: Auto-Create LangCache (Right Side) */}
+            <div className="relative">
+              <div className="bg-green-50 border-4 border-green-500 rounded-xl p-6 shadow-xl">
+                <div className="text-center mb-4">
+                  <h4 className="text-xl font-bold text-green-700 mb-2">Option 2: Auto-Create LangCache</h4>
+                  <p className="text-green-600 font-medium">Auto-provisioned</p>
+                </div>
+
                 <Link href="/dashboard?flow=quick-create">
-                  <div className="cursor-pointer">
-                    <div className="flex items-center justify-center mb-4">
-                      <div className="bg-green-500 text-white rounded-full p-3 mr-3">
-                        <ArrowRight className="h-6 w-6" />
-                      </div>
-                      <h4 className="text-lg font-bold text-green-700">Auto-Create LangCache</h4>
-                    </div>
-                    <p className="text-sm text-gray-600 text-center mb-3">Auto-provisioned</p>
-                    <div className="bg-green-50 rounded-lg p-3 text-xs text-green-800">
-                      Directly start the service creation process (current Activate Account flow)
+                  <div className="relative cursor-pointer hover:scale-105 transition-all duration-300">
+                    <img
+                      src="/images/Activiation Email.png"
+                      alt="Redis Activation Email - Option 2"
+                      className="w-full h-auto rounded-lg shadow-lg border border-green-200"
+                    />
+
+                    {/* Activate Button Overlay */}
+                    <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20">
+                      <Button
+                        size="lg"
+                        className="bg-green-600 text-white border-4 border-white hover:bg-green-700 hover:scale-105 shadow-2xl font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300"
+                      >
+                        🚀 Activate Account (Option 2)
+                        <ArrowRight className="ml-2 h-6 w-6" />
+                      </Button>
                     </div>
                   </div>
                 </Link>
+
+                <div className="mt-4 bg-green-100 rounded-lg p-3">
+                  <p className="text-sm text-green-800 text-center">
+                    Directly start the service creation process (current activate flow)
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
 
-            {/* Back to Email Button */}
-            <div className="text-center mt-6">
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-white border-gray-300 text-gray-600 hover:bg-gray-50"
-                onClick={() => window.location.reload()}
-              >
-                ↻ Back to Email (Try Both Flows)
-              </Button>
-            </div>
+          {/* Back to Email Button */}
+          <div className="text-center mt-8">
+            <Button
+              variant="outline"
+              size="lg"
+              className="bg-white border-gray-300 text-gray-600 hover:bg-gray-50 px-8 py-3"
+              onClick={() => window.location.reload()}
+            >
+              ↻ Back to Email (Try Both Flows)
+            </Button>
           </div>
         </div>
       </div>
