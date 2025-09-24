@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -26,7 +27,9 @@ import {
   Info,
   Grid3X3,
   MapPin,
+  Check,
 } from "lucide-react"
+import { SearchableSelect } from "@/components/ui/searchable-select"
 
 export default function RedisDashboard() {
   const [selectedDatabase, setSelectedDatabase] = useState("")
@@ -41,6 +44,10 @@ export default function RedisDashboard() {
     subscriptionId: string
     link: string
   } | null>(null)
+
+  // New state for creation flow
+  const [creationFlow, setCreationFlow] = useState<'selection' | 'quick' | 'custom'>('selection')
+  const [quickCreateStep, setQuickCreateStep] = useState<'idle' | 'creating-db' | 'db-created' | 'creating-service' | 'service-created' | 'completed' | 'showing-keys' | 'service-details'>('idle')
 
   const databaseOptions = [
     {
@@ -95,7 +102,7 @@ export default function RedisDashboard() {
     return pricing[size] || { hourly: 0, monthly: 0 }
   }
 
-  const handleCreateDatabase = async () => {
+  const handleCreateDatabase = () => {
     setIsCreatingDatabase(true)
 
     setTimeout(() => {
@@ -103,7 +110,38 @@ export default function RedisDashboard() {
     }, 2000)
   }
 
-  const handleSaveConfiguration = async () => {
+  // Quick create process
+  const handleQuickCreate = () => {
+    setQuickCreateStep('creating-db')
+
+    // Step 1: Create database (5 seconds)
+    setTimeout(() => {
+      setQuickCreateStep('db-created')
+
+      // Step 2: Create service (3 seconds)
+      setTimeout(() => {
+        setQuickCreateStep('creating-service')
+
+        setTimeout(() => {
+          setQuickCreateStep('service-created')
+
+          // Complete the process and show keys
+          setTimeout(() => {
+            setQuickCreateStep('showing-keys')
+            // Auto-create a database entry
+            setCreatedDatabase({
+              name: "quick-langcache-db",
+              id: "quick-db-" + Date.now(),
+              subscriptionId: "free-sub-001",
+              link: "https://console.redis.com/quick-db"
+            })
+          }, 1000)
+        }, 3000)
+      }, 1000)
+    }, 5000)
+  }
+
+  const handleSaveConfiguration = () => {
     setIsCreatingDatabase(true)
 
     setTimeout(() => {
@@ -120,6 +158,17 @@ export default function RedisDashboard() {
       setIsCreatingDatabase(false)
     }, 1500)
   }
+
+  // Check for URL parameter to auto-start quick create
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.get('flow') === 'quick-create') {
+        setCreationFlow('quick')
+        handleQuickCreate()
+      }
+    }
+  }, [])
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -145,7 +194,13 @@ export default function RedisDashboard() {
             <span className="text-sm">Subscriptions</span>
           </div>
 
-          <div className="flex items-center gap-3 px-3 py-2 bg-gray-900 text-white rounded-md">
+          <div
+            className="flex items-center gap-3 px-3 py-2 bg-gray-900 text-white rounded-md cursor-pointer hover:bg-gray-800 transition-colors"
+            onClick={() => {
+              setCreationFlow('selection')
+              setQuickCreateStep('idle')
+            }}
+          >
             <div className="w-4 h-4 bg-purple-600 rounded text-white text-xs flex items-center justify-center font-bold">
               L
             </div>
@@ -256,89 +311,220 @@ export default function RedisDashboard() {
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-4xl space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>General Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <p className="text-sm text-blue-600 mb-6">
-                    You can apply LangCache to an existing database or create a new one
-                  </p>
+        <main className="flex-1 p-2 overflow-auto">
+          <div className="w-full space-y-2">
 
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <Label htmlFor="service-name" className="text-sm font-medium text-red-600">
-                        * Service Name
-                      </Label>
-                      <Input id="service-name" placeholder="my-llm-cache" className="mt-1" />
+            {/* Selection Screen with Dashboard Background */}
+            {creationFlow === 'selection' && (
+              <div className="relative w-full">
+                {/* Dashboard Background Image */}
+                <div className="relative w-screen -mx-16">
+                  <img
+                    src="/images/Dashboard.png"
+                    alt="LangCache Dashboard"
+                    className="w-full h-auto min-h-[80vh] object-cover"
+                  />
+
+                  {/* Overlay Tiles positioned over the "Let's create a service" button */}
+                  <div className="absolute inset-0 flex items-start justify-center pt-42">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
+                      {/* Quick Create Button */}
+                      <Button
+                        className="h-auto p-4 w-full min-w-[200px] bg-green-500 hover:bg-green-600 text-white shadow-md hover:shadow-lg transition-all duration-200 flex flex-col items-center text-center"
+                        onClick={() => {
+                          setCreationFlow('quick')
+                          handleQuickCreate()
+                        }}
+                      >
+                        <div className="font-semibold text-sm">Quick Create</div>
+                        <div className="text-xs opacity-90 mt-1 px-2">Pre-configured with our recommended settings</div>
+                      </Button>
+
+                      {/* Custom Create Button */}
+                      <Button
+                        className="h-auto p-4 w-full min-w-[200px] bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg transition-all duration-200 flex flex-col items-center text-center"
+                        onClick={() => setCreationFlow('custom')}
+                      >
+                        <div className="font-semibold text-sm">Customize Create</div>
+                        <div className="text-xs opacity-90 mt-1 px-2">Configure your own settings</div>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Quick Create Progress Screen */}
+            {creationFlow === 'quick' && quickCreateStep !== 'showing-keys' && (
+              <div className="max-w-2xl mx-auto">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-center">Setting Up Your LangCache Service</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-8">
+                    {/* Step 1: Database Creation */}
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        quickCreateStep === 'creating-db' ? 'bg-blue-100' :
+                        ['db-created', 'creating-service', 'service-created', 'completed'].includes(quickCreateStep) ? 'bg-green-100' : 'bg-gray-100'
+                      }`}>
+                        {quickCreateStep === 'creating-db' ? (
+                          <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        ) : ['db-created', 'creating-service', 'service-created', 'completed'].includes(quickCreateStep) ? (
+                          <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <span className="text-gray-400">1</span>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium">Creating a free database for you</h3>
+                        <p className="text-sm text-gray-600">
+                          {quickCreateStep === 'creating-db' ? 'Setting up your Redis database...' :
+                           ['db-created', 'creating-service', 'service-created', 'completed'].includes(quickCreateStep) ? 'Database created successfully!' :
+                           'Waiting to start...'}
+                        </p>
+                      </div>
                     </div>
 
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <Label className="text-sm font-medium text-red-600">* Select or Create Database</Label>
-                        <Info className="w-4 h-4 text-gray-400" />
+                    {/* Step 2: Service Creation */}
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        quickCreateStep === 'creating-service' ? 'bg-blue-100' :
+                        ['service-created', 'completed'].includes(quickCreateStep) ? 'bg-green-100' : 'bg-gray-100'
+                      }`}>
+                        {quickCreateStep === 'creating-service' ? (
+                          <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        ) : ['service-created', 'completed'].includes(quickCreateStep) ? (
+                          <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <span className="text-gray-400">2</span>
+                        )}
                       </div>
-                      <div className="relative">
-                        <Select
-                          value={selectedDatabase}
-                          onValueChange={(value) => {
-                            setSelectedDatabase(value)
-                            setShowNewDatabaseFields(value === "create-new")
-                          }}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Search databases or create new..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="create-new">
-                              <div className="flex items-center gap-2">
-                                <Plus className="w-4 h-4 text-blue-600" />
-                                <span>Create new database</span>
-                              </div>
-                            </SelectItem>
-                            {createdDatabase && (
-                              <SelectItem value={createdDatabase.id}>
-                                <div className="flex items-center gap-2">
-                                  <Database className="w-4 h-4 text-green-600" />
-                                  <span>{createdDatabase.name}</span>
-                                </div>
-                              </SelectItem>
-                            )}
-                            <SelectItem value="db1">
-                              <div className="flex items-center gap-2">
-                                <Database className="w-4 h-4 text-gray-500" />
-                                <span>my-production-db</span>
-                              </div>
-                            </SelectItem>
-                            <SelectItem value="db2">
-                              <div className="flex items-center gap-2">
-                                <Database className="w-4 h-4 text-gray-500" />
-                                <span>my-staging-db</span>
-                              </div>
-                            </SelectItem>
-                            <SelectItem value="db3">
-                              <div className="flex items-center gap-2">
-                                <Database className="w-4 h-4 text-gray-500" />
-                                <span>my-development-db</span>
-                              </div>
-                            </SelectItem>
-                            <SelectItem value="db4">
-                              <div className="flex items-center gap-2">
-                                <Database className="w-4 h-4 text-gray-500" />
-                                <span>analytics-cache-db</span>
-                              </div>
-                            </SelectItem>
-                            <SelectItem value="db5">
-                              <div className="flex items-center gap-2">
-                                <Database className="w-4 h-4 text-gray-500" />
-                                <span>user-session-db</span>
-                              </div>
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <div className="flex-1">
+                        <h3 className="font-medium">Service is getting created</h3>
+                        <p className="text-sm text-gray-600">
+                          {quickCreateStep === 'creating-service' ? 'Configuring your LangCache service...' :
+                           ['service-created', 'completed'].includes(quickCreateStep) ? 'Service created successfully!' :
+                           'Waiting for database creation...'}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Keys Display - Full Screen Overlay */}
+            {creationFlow === 'quick' && quickCreateStep === 'showing-keys' && (
+              <div className="fixed inset-0 bg-white z-50 flex flex-col">
+                {/* Header */}
+                <div className="bg-white border-b border-gray-200 px-6 py-4">
+                  <h1 className="text-xl font-semibold">Your Service Keys</h1>
+                </div>
+
+                {/* Full Screen Image */}
+                <div className="flex-1 relative">
+                  <img
+                    src="/images/Key.png"
+                    alt="Service Keys"
+                    className="w-full h-full object-contain"
+                  />
+
+                  {/* Close button overlay */}
+                  <Button
+                    onClick={() => setQuickCreateStep('service-details')}
+                    className="absolute top-6 right-6 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-base font-semibold shadow-xl rounded-lg"
+                  >
+                    Click here to see what happens when user clicks on Close
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Service Details Screen - Full Screen */}
+            {creationFlow === 'quick' && quickCreateStep === 'service-details' && (
+              <div className="fixed inset-0 bg-white z-50 flex flex-col">
+                {/* Header */}
+                <div className="bg-white border-b border-gray-200 px-6 py-4">
+                  <div className="flex items-center">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setCreationFlow('selection')}
+                      className="mr-4"
+                    >
+                      <ChevronLeft className="w-4 h-4 mr-1" />
+                      Back to Dashboard
+                    </Button>
+                    <h1 className="text-xl font-semibold">Service Detail Screen is shown</h1>
+                  </div>
+                </div>
+
+                {/* Full Screen Service Details Image */}
+                <div className="flex-1 relative bg-gray-50">
+                  <img
+                    src="/images/servicedetail.png"
+                    alt="Service Details"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Custom Create Screen (Original Form) */}
+            {creationFlow === 'custom' && (
+              <>
+                <div className="flex items-center mb-6">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCreationFlow('selection')}
+                    className="mr-4"
+                  >
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    Back to Selection
+                  </Button>
+                  <h2 className="text-xl font-semibold">Custom Configuration</h2>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>General Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div>
+                      <p className="text-sm text-blue-600 mb-6">
+                        You can apply LangCache to an existing database or create a new one
+                      </p>
+
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <Label htmlFor="service-name" className="text-sm font-medium text-red-600">
+                            * Service Name
+                          </Label>
+                          <Input id="service-name" placeholder="my-llm-cache" className="mt-1" />
+                        </div>
+
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Label className="text-sm font-medium text-red-600">* Select or Create Database</Label>
+                            <Info className="w-4 h-4 text-gray-400" />
+                          </div>
+                          <div className="relative">
+                            <SearchableSelect
+                              value={selectedDatabase}
+                              onValueChange={(value) => {
+                                setSelectedDatabase(value)
+                                setShowNewDatabaseFields(value === "create-new")
+                              }}
+                              placeholder="Search databases or create new..."
+                              options={databaseOptions}
+                              className="w-full"
+                            />
                       </div>
                     </div>
                   </div>
@@ -863,6 +1049,9 @@ export default function RedisDashboard() {
                 )}
               </Button>
             </div>
+              </>
+            )}
+
           </div>
         </main>
       </div>

@@ -1,5 +1,5 @@
-import RedisDashboard from "@/components/redis-dashboard"
+import UserJourneySelection from "@/components/user-journey-selection"
 
 export default function Home() {
-  return <RedisDashboard />
+  return <UserJourneySelection />
 }
