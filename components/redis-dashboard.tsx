@@ -418,90 +418,29 @@ export default function RedisDashboard() {
               </div>
             )}
 
-            {/* Service Keys Modal - Custom Fast-Loading Modal */}
+            {/* Service Key Modal - Simple Key Display */}
             {creationFlow === 'quick' && quickCreateStep === 'showing-keys' && (
               <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-auto">
+                <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full">
                   {/* Modal Header */}
-                  <div className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-4 rounded-t-xl">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-bold">🔑 Your LangCache Service Keys</h2>
-                      <div className="text-red-200 text-sm">Redis Cloud</div>
-                    </div>
+                  <div className="bg-red-600 text-white px-6 py-4 rounded-t-xl">
+                    <h2 className="text-xl font-bold">🔑 Your Service Key</h2>
                   </div>
 
                   {/* Modal Content */}
-                  <div className="p-6 space-y-6">
-                    {/* Success Message */}
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <div className="flex items-center">
-                        <div className="bg-green-500 rounded-full p-1 mr-3">
-                          <Check className="h-4 w-4 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-green-800">Service Created Successfully!</h3>
-                          <p className="text-green-600 text-sm">Your LangCache service is ready to use</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Connection Details */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-gray-800">Connection Details</h3>
-
-                      {/* Endpoint */}
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Endpoint</label>
-                        <div className="flex items-center space-x-2">
-                          <code className="flex-1 bg-white border rounded px-3 py-2 text-sm font-mono">
-                            redis-12345.c123.us-east-1-2.ec2.cloud.redislabs.com:12345
-                          </code>
-                          <Button size="sm" variant="outline">Copy</Button>
-                        </div>
-                      </div>
-
-                      {/* Password */}
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <div className="flex items-center space-x-2">
-                          <code className="flex-1 bg-white border rounded px-3 py-2 text-sm font-mono">
-                            abc123XYZ789secretkey456
-                          </code>
-                          <Button size="sm" variant="outline">Copy</Button>
-                        </div>
-                      </div>
-
-                      {/* Username */}
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
-                        <div className="flex items-center space-x-2">
-                          <code className="flex-1 bg-white border rounded px-3 py-2 text-sm font-mono">
-                            default
-                          </code>
-                          <Button size="sm" variant="outline">Copy</Button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Important Note */}
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                      <div className="flex items-start">
-                        <Info className="h-5 w-5 text-yellow-600 mt-0.5 mr-3 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium text-yellow-800">Important</h4>
-                          <p className="text-yellow-700 text-sm mt-1">
-                            Save these credentials securely. You'll need them to connect your application to the LangCache service.
-                          </p>
-                        </div>
+                  <div className="p-6">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="flex items-center space-x-2">
+                        <code className="flex-1 bg-white border rounded px-3 py-2 text-sm font-mono">
+                          redis_key_abc123XYZ789demo456def
+                        </code>
+                        <Button size="sm" variant="outline">Copy</Button>
                       </div>
                     </div>
                   </div>
 
                   {/* Modal Footer */}
-                  <div className="bg-gray-50 px-6 py-4 rounded-b-xl flex justify-between items-center">
-                    <div className="text-sm text-gray-600">
-                      Service ID: langcache-demo-12345
-                    </div>
+                  <div className="bg-gray-50 px-6 py-4 rounded-b-xl flex justify-end">
                     <Button
                       onClick={() => setQuickCreateStep('service-details')}
                       className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
