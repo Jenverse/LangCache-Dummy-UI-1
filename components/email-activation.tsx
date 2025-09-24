@@ -24,22 +24,62 @@ export default function EmailActivation() {
             className="w-full h-auto rounded-lg shadow-xl border border-gray-200"
           />
 
-          {/* Activate Account Button - positioned over the email button */}
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20">
-            <Link href="/dashboard?flow=quick-create">
-              <Button
-                size="lg"
-                className="bg-red-600 text-white border-4 border-white hover:bg-red-700 hover:scale-105 shadow-2xl font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300"
-              >
-                🚀 Activate Account
-                <ArrowRight className="ml-2 h-6 w-6" />
-              </Button>
-            </Link>
-          </div>
+          {/* Two Path Options - positioned over the email button */}
+          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-20 w-full max-w-4xl">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Choose Your User Journey:</h3>
+              <p className="text-gray-600">Click on either path to experience different UX flows</p>
+            </div>
 
-          {/* Pulsing animation overlay to make button more noticeable */}
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10">
-            <div className="w-64 h-16 bg-red-500 opacity-20 rounded-xl animate-pulse"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
+              {/* Option 1: Landing Page + One-Click Creation */}
+              <div className="bg-white rounded-xl shadow-xl border-4 border-blue-500 p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                <Link href="/dashboard">
+                  <div className="cursor-pointer">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="bg-blue-500 text-white rounded-full p-3 mr-3">
+                        <ArrowRight className="h-6 w-6" />
+                      </div>
+                      <h4 className="text-lg font-bold text-blue-700">Landing Page + One-Click Creation</h4>
+                    </div>
+                    <p className="text-sm text-gray-600 text-center mb-3">User chooses to create</p>
+                    <div className="bg-blue-50 rounded-lg p-3 text-xs text-blue-800">
+                      Go to dashboard with Quick Create and Customize Create options
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Option 2: Auto-Create LangCache (Current Activate Account Flow) */}
+              <div className="bg-white rounded-xl shadow-xl border-4 border-green-500 p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                <Link href="/dashboard?flow=quick-create">
+                  <div className="cursor-pointer">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="bg-green-500 text-white rounded-full p-3 mr-3">
+                        <ArrowRight className="h-6 w-6" />
+                      </div>
+                      <h4 className="text-lg font-bold text-green-700">Auto-Create LangCache</h4>
+                    </div>
+                    <p className="text-sm text-gray-600 text-center mb-3">Auto-provisioned</p>
+                    <div className="bg-green-50 rounded-lg p-3 text-xs text-green-800">
+                      Directly start the service creation process (current Activate Account flow)
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Back to Email Button */}
+            <div className="text-center mt-6">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-white border-gray-300 text-gray-600 hover:bg-gray-50"
+                onClick={() => window.location.reload()}
+              >
+                ↻ Back to Email (Try Both Flows)
+              </Button>
+            </div>
           </div>
         </div>
       </div>
