@@ -467,7 +467,7 @@ export default function RedisDashboard() {
                 {/* Full Screen Service Details Image */}
                 <div className="flex-1 relative bg-gray-50">
                   <img
-                    src="/images/servicedetail.png"
+                    src="/images/ServiceDetail.png"
                     alt="Service Details"
                     className="w-full h-full object-contain"
                   />
