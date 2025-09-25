@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
 import Link from "next/link"
 
 export default function EmailActivation() {
@@ -25,6 +25,18 @@ export default function EmailActivation() {
                 <strong>The advantage of Option 1</strong> is that it will land into more intentional cache creation and giving user the choice if they want to configure additional settings along with one click setup
               </p>
             </div>
+
+            {/* Decision Made Banner */}
+            <div className="bg-green-100 border-2 border-green-500 rounded-lg p-4 max-w-2xl mx-auto mt-4">
+              <div className="flex items-center justify-center">
+                <div className="bg-green-500 rounded-full p-1 mr-3">
+                  <Check className="h-5 w-5 text-white" />
+                </div>
+                <p className="text-lg text-green-800 font-bold">
+                  ✅ DECISION MADE: Moving forward with Option 1
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Two Email Options Side by Side */}
@@ -32,9 +44,18 @@ export default function EmailActivation() {
 
             {/* Option 1: Landing Page + One-Click Creation (Left Side) */}
             <div className="relative">
-              <div className="bg-blue-50 border-4 border-blue-500 rounded-xl p-6 shadow-xl">
+              {/* Selected Badge */}
+              <div className="absolute -top-3 -right-3 z-30 bg-green-500 text-white rounded-full p-2 shadow-lg border-4 border-white">
+                <Check className="h-6 w-6" />
+              </div>
+              <div className="bg-blue-50 border-4 border-blue-500 rounded-xl p-6 shadow-xl relative">
                 <div className="text-center mb-4">
-                  <h4 className="text-xl font-bold text-blue-700 mb-2">Option 1: Landing Page + One-Click Creation</h4>
+                  <div className="flex items-center justify-center mb-2">
+                    <h4 className="text-xl font-bold text-blue-700">Option 1: Landing Page + One-Click Creation</h4>
+                    <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold ml-3">
+                      SELECTED ✓
+                    </div>
+                  </div>
                   <p className="text-blue-600 font-medium">User chooses to create</p>
                 </div>
 
