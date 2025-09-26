@@ -461,7 +461,7 @@ export default function RedisDashboard() {
               </div>
             )}
 
-            {/* Service Details Screen - Congratulations & Mode Selection */}
+            {/* Service Details Screen - Enhanced with Mode Selection */}
             {creationFlow === 'quick' && quickCreateStep === 'service-details' && (
               <div className="fixed inset-0 bg-white z-50 flex flex-col">
                 {/* Header */}
@@ -476,134 +476,92 @@ export default function RedisDashboard() {
                       <ChevronLeft className="w-4 h-4 mr-1" />
                       Back to Dashboard
                     </Button>
-                    <h1 className="text-xl font-semibold">🎉 Congratulations on Creating Your Service!</h1>
+                    <h1 className="text-xl font-semibold">🎉 Service Details - Congratulations!</h1>
                   </div>
                 </div>
 
-                {/* Congratulations Content */}
-                <div className="flex-1 flex items-center justify-center p-8 bg-gradient-to-br from-green-50 to-blue-50">
-                  <div className="max-w-4xl w-full">
-                    {/* Success Message */}
-                    <div className="text-center mb-8">
-                      <div className="bg-green-500 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <Check className="h-10 w-10 text-white" />
+                {/* Service Details Content */}
+                <div className="flex-1 overflow-auto">
+                  {/* Congratulations & Mode Selection Section */}
+                  <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 border-b">
+                    <div className="max-w-6xl mx-auto">
+                      {/* Success Message */}
+                      <div className="text-center mb-6">
+                        <div className="bg-green-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                          <Check className="h-8 w-8 text-white" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2">Service Created Successfully!</h2>
+                        <p className="text-gray-600">Choose how you want to run your LangCache service:</p>
                       </div>
-                      <h2 className="text-3xl font-bold text-gray-800 mb-2">Service Created Successfully!</h2>
-                      <p className="text-lg text-gray-600">Your LangCache service is ready. Now choose how you want to run it:</p>
-                    </div>
 
-                    {/* Mode Selection */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                      {/* Shadow Mode */}
-                      <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 p-6">
-                        <div className="text-center mb-4">
-                          <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-                            <Eye className="h-8 w-8 text-blue-600" />
+                      {/* Mode Selection - Compact */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        {/* Shadow Mode */}
+                        <div className="bg-white rounded-lg shadow border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 p-4">
+                          <div className="flex items-center mb-3">
+                            <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mr-3">
+                              <Eye className="h-6 w-6 text-blue-600" />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-bold text-gray-800">Shadow Mode</h3>
+                              <p className="text-sm text-gray-600">Monitor queries, get weekly reports</p>
+                            </div>
                           </div>
-                          <h3 className="text-xl font-bold text-gray-800 mb-2">Shadow Mode</h3>
-                          <p className="text-gray-600 text-sm mb-4">
-                            Monitor your queries without affecting your application. Get insights on cache hit rates and query patterns.
-                          </p>
+                          <Button
+                            onClick={() => {setServiceMode('shadow'); setShowReport(false)}}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                            size="sm"
+                          >
+                            {serviceMode === 'shadow' ? '✓ Selected' : 'Choose Shadow Mode'}
+                          </Button>
                         </div>
-                        <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                          <h4 className="font-semibold text-blue-800 mb-2">What you get:</h4>
-                          <ul className="text-sm text-blue-700 space-y-1">
-                            <li>• Cache Hit Rate analysis</li>
-                            <li>• Repeat query identification</li>
-                            <li>• Query similarity matching</li>
-                            <li>• Weekly performance report</li>
-                          </ul>
-                        </div>
-                        <Button
-                          onClick={() => setQuickCreateStep('shadow-setup')}
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                          size="lg"
-                        >
-                          Choose Shadow Mode
-                        </Button>
-                      </div>
 
-                      {/* Live Mode */}
-                      <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 hover:border-green-500 transition-all duration-300 p-6">
-                        <div className="text-center mb-4">
-                          <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-                            <Zap className="h-8 w-8 text-green-600" />
+                        {/* Live Mode */}
+                        <div className="bg-white rounded-lg shadow border-2 border-gray-200 hover:border-green-500 transition-all duration-300 p-4">
+                          <div className="flex items-center mb-3">
+                            <div className="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center mr-3">
+                              <Zap className="h-6 w-6 text-green-600" />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-bold text-gray-800">Live Mode</h3>
+                              <p className="text-sm text-gray-600">Start caching immediately</p>
+                            </div>
                           </div>
-                          <h3 className="text-xl font-bold text-gray-800 mb-2">Live Mode</h3>
-                          <p className="text-gray-600 text-sm mb-4">
-                            Start caching immediately with full performance benefits. Your application will use the cache right away.
-                          </p>
+                          <Button
+                            onClick={() => {setServiceMode('live'); setShowReport(false)}}
+                            className="w-full bg-green-600 hover:bg-green-700 text-white"
+                            size="sm"
+                          >
+                            {serviceMode === 'live' ? '✓ Selected' : 'Choose Live Mode'}
+                          </Button>
                         </div>
-                        <div className="bg-green-50 rounded-lg p-4 mb-4">
-                          <h4 className="font-semibold text-green-800 mb-2">What you get:</h4>
-                          <ul className="text-sm text-green-700 space-y-1">
-                            <li>• Immediate performance boost</li>
-                            <li>• Real-time caching</li>
-                            <li>• Reduced database load</li>
-                            <li>• Full production benefits</li>
-                          </ul>
-                        </div>
-                        <Button
-                          onClick={() => setQuickCreateStep('live-setup')}
-                          className="w-full bg-green-600 hover:bg-green-700 text-white"
-                          size="lg"
-                        >
-                          Choose Live Mode
-                        </Button>
                       </div>
-                    </div>
 
-                    {/* Additional Info */}
-                    <div className="text-center">
-                      <p className="text-gray-500 text-sm">
-                        💡 You can always switch between modes later in your service settings
-                      </p>
+                      {/* Weekly Report Button */}
+                      {serviceMode === 'shadow' && (
+                        <div className="text-center">
+                          <Button
+                            onClick={() => setShowReport(!showReport)}
+                            variant="outline"
+                            className="bg-white border-blue-300 text-blue-700 hover:bg-blue-50"
+                          >
+                            <BarChart3 className="h-4 w-4 mr-2" />
+                            {showReport ? 'Hide Weekly Report' : 'View Weekly Report'}
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
 
-            {/* Shadow Mode Setup Screen */}
-            {creationFlow === 'quick' && quickCreateStep === 'shadow-setup' && (
-              <div className="fixed inset-0 bg-white z-50 flex flex-col">
-                {/* Header */}
-                <div className="bg-white border-b border-gray-200 px-6 py-4">
-                  <div className="flex items-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setQuickCreateStep('service-details')}
-                      className="mr-4"
-                    >
-                      <ChevronLeft className="w-4 h-4 mr-1" />
-                      Back to Mode Selection
-                    </Button>
-                    <h1 className="text-xl font-semibold">🔍 Shadow Mode Setup</h1>
-                  </div>
-                </div>
-
-                {/* Shadow Mode Setup Content */}
-                <div className="flex-1 flex items-center justify-center p-8 bg-gradient-to-br from-blue-50 to-indigo-50">
-                  <div className="max-w-4xl w-full">
-                    {/* Instructions */}
-                    <div className="text-center mb-8">
-                      <div className="bg-blue-500 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <Eye className="h-10 w-10 text-white" />
-                      </div>
-                      <h2 className="text-3xl font-bold text-gray-800 mb-2">Add Shadow Mode to Your Application</h2>
-                      <p className="text-lg text-gray-600">Use this code in your application to start monitoring your queries</p>
-                    </div>
-
-                    {/* Code Block */}
-                    <div className="bg-gray-900 rounded-xl p-6 mb-8">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-white font-semibold">Integration Code</h3>
-                        <Button size="sm" variant="outline" className="bg-white text-gray-900">
-                          Copy Code
-                        </Button>
-                      </div>
-                      <pre className="text-green-400 text-sm overflow-x-auto">
+                  {/* Shadow Mode Setup Section */}
+                  {serviceMode === 'shadow' && !showReport && (
+                    <div className="p-6 bg-blue-50 border-b">
+                      <div className="max-w-6xl mx-auto">
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">🔍 Shadow Mode Setup</h3>
+                        <div className="bg-white rounded-lg p-4 mb-4">
+                          <h4 className="font-semibold text-gray-800 mb-2">Add this code to your application:</h4>
+                          <div className="bg-gray-900 rounded p-3 mb-3">
+                            <pre className="text-green-400 text-xs overflow-x-auto">
 {`// Add this to your application
 import { LangCacheShadow } from '@redis/langcache-shadow';
 
@@ -614,194 +572,131 @@ const shadowCache = new LangCacheShadow({
 });
 
 // Wrap your existing queries
-const result = await shadowCache.monitor(
-  'your-query-key',
-  async () => {
-    // Your existing database query
-    return await db.query('SELECT * FROM users WHERE id = ?', [userId]);
-  }
-);`}
-                      </pre>
-                    </div>
-
-                    {/* Next Steps */}
-                    <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-                      <h3 className="text-xl font-bold text-gray-800 mb-4">What happens next?</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="text-center">
-                          <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
-                            <span className="text-blue-600 font-bold">1</span>
+const result = await shadowCache.monitor('your-query-key', async () => {
+  return await db.query('SELECT * FROM users WHERE id = ?', [userId]);
+});`}
+                            </pre>
                           </div>
-                          <h4 className="font-semibold text-gray-800">Add Code</h4>
-                          <p className="text-sm text-gray-600">Integrate the shadow monitoring code</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
-                            <span className="text-blue-600 font-bold">2</span>
+                          <div className="flex justify-between items-center">
+                            <p className="text-sm text-gray-600">Once you add this code, we'll start monitoring your queries.</p>
+                            <Button size="sm" variant="outline">Copy Code</Button>
                           </div>
-                          <h4 className="font-semibold text-gray-800">Monitor</h4>
-                          <p className="text-sm text-gray-600">We analyze your query patterns</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
-                            <span className="text-blue-600 font-bold">3</span>
-                          </div>
-                          <h4 className="font-semibold text-gray-800">Report</h4>
-                          <p className="text-sm text-gray-600">Get insights after one week</p>
                         </div>
                       </div>
                     </div>
+                  )}
 
-                    {/* Action Buttons */}
-                    <div className="text-center space-y-4">
-                      <Button
-                        onClick={() => setQuickCreateStep('report-ready')}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
-                        size="lg"
-                      >
-                        ✅ Code Added - We're All Set!
-                      </Button>
-                      <p className="text-gray-500 text-sm">
-                        Click when you've added the code to your application
-                      </p>
+                  {/* Live Mode Setup Section */}
+                  {serviceMode === 'live' && (
+                    <div className="p-6 bg-green-50 border-b">
+                      <div className="max-w-6xl mx-auto">
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">⚡ Live Mode Active</h3>
+                        <div className="bg-white rounded-lg p-4">
+                          <div className="flex items-center mb-3">
+                            <div className="bg-green-500 rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                              <Check className="h-4 w-4 text-white" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-800">Your cache is now active!</h4>
+                              <p className="text-sm text-gray-600">Start seeing performance improvements immediately.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Weekly Report Section */}
+                  {serviceMode === 'shadow' && showReport && (
+                    <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-b">
+                      <div className="max-w-6xl mx-auto">
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">📊 Weekly Cache Analysis Report</h3>
+
+                        {/* Report Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                          {/* Cache Hit Rate */}
+                          <div className="bg-white rounded-lg shadow p-4">
+                            <div className="flex items-center mb-2">
+                              <TrendingUp className="h-5 w-5 text-green-600 mr-2" />
+                              <h4 className="font-bold text-gray-800">Cache Hit Rate</h4>
+                            </div>
+                            <div className="text-2xl font-bold text-green-600 mb-1">73%</div>
+                            <p className="text-xs text-gray-600">of queries could be cached</p>
+                          </div>
+
+                          {/* Matched Queries */}
+                          <div className="bg-white rounded-lg shadow p-4">
+                            <div className="flex items-center mb-2">
+                              <Search className="h-5 w-5 text-blue-600 mr-2" />
+                              <h4 className="font-bold text-gray-800">Matched Queries</h4>
+                            </div>
+                            <div className="text-2xl font-bold text-blue-600 mb-1">1,247</div>
+                            <p className="text-xs text-gray-600">similar query patterns</p>
+                          </div>
+
+                          {/* Similarity Score */}
+                          <div className="bg-white rounded-lg shadow p-4">
+                            <div className="flex items-center mb-2">
+                              <Target className="h-5 w-5 text-purple-600 mr-2" />
+                              <h4 className="font-bold text-gray-800">Similarity Score</h4>
+                            </div>
+                            <div className="text-2xl font-bold text-purple-600 mb-1">89%</div>
+                            <p className="text-xs text-gray-600">average match accuracy</p>
+                          </div>
+                        </div>
+
+                        {/* Insights */}
+                        <div className="bg-white rounded-lg shadow p-4">
+                          <h4 className="font-bold text-gray-800 mb-3">Key Insights & Recommendations</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <h5 className="font-semibold text-gray-700 mb-2">Top Cacheable Queries:</h5>
+                              <ul className="text-gray-600 space-y-1">
+                                <li>• User profile lookups (89% hit rate)</li>
+                                <li>• Product catalog searches (76% hit rate)</li>
+                                <li>• Category listings (92% hit rate)</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-gray-700 mb-2">Recommendations:</h5>
+                              <ul className="text-gray-600 space-y-1">
+                                <li>• Enable caching for user profiles</li>
+                                <li>• Cache product data with 1-hour TTL</li>
+                                <li>• Consider semantic caching for search</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div className="mt-4 text-center">
+                            <Button
+                              onClick={() => {setServiceMode('live'); setShowReport(false)}}
+                              className="bg-green-600 hover:bg-green-700 text-white"
+                            >
+                              🚀 Switch to Live Mode
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Original Service Details Image */}
+                  <div className="p-6 bg-gray-50">
+                    <div className="max-w-6xl mx-auto">
+                      <h3 className="text-xl font-bold text-gray-800 mb-4">Service Configuration Details</h3>
+                      <div className="bg-white rounded-lg shadow">
+                        <img
+                          src="/images/ServiceDetail.png"
+                          alt="Service Details"
+                          className="w-full h-auto rounded-lg"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Report Ready Screen */}
-            {creationFlow === 'quick' && quickCreateStep === 'report-ready' && (
-              <div className="fixed inset-0 bg-white z-50 flex flex-col">
-                {/* Header */}
-                <div className="bg-white border-b border-gray-200 px-6 py-4">
-                  <div className="flex items-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setCreationFlow('selection')}
-                      className="mr-4"
-                    >
-                      <ChevronLeft className="w-4 h-4 mr-1" />
-                      Back to Dashboard
-                    </Button>
-                    <h1 className="text-xl font-semibold">📊 Your Cache Analysis Report</h1>
-                  </div>
-                </div>
 
-                {/* Report Content */}
-                <div className="flex-1 p-8 bg-gradient-to-br from-green-50 to-blue-50 overflow-auto">
-                  <div className="max-w-6xl mx-auto">
-                    {/* Report Header */}
-                    <div className="text-center mb-8">
-                      <div className="bg-green-500 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <BarChart3 className="h-10 w-10 text-white" />
-                      </div>
-                      <h2 className="text-3xl font-bold text-gray-800 mb-2">Your Weekly Cache Analysis Report</h2>
-                      <p className="text-lg text-gray-600">Based on 7 days of query monitoring</p>
-                    </div>
-
-                    {/* Report Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                      {/* Cache Hit Rate */}
-                      <div className="bg-white rounded-xl shadow-lg p-6">
-                        <div className="flex items-center mb-4">
-                          <div className="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                            <TrendingUp className="h-6 w-6 text-green-600" />
-                          </div>
-                          <div>
-                            <h3 className="text-lg font-bold text-gray-800">Cache Hit Rate</h3>
-                            <p className="text-sm text-gray-600">Potential performance gain</p>
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-4xl font-bold text-green-600 mb-2">73%</div>
-                          <p className="text-sm text-gray-600">of your queries could be cached</p>
-                        </div>
-                      </div>
-
-                      {/* Matched Queries */}
-                      <div className="bg-white rounded-xl shadow-lg p-6">
-                        <div className="flex items-center mb-4">
-                          <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                            <Search className="h-6 w-6 text-blue-600" />
-                          </div>
-                          <div>
-                            <h3 className="text-lg font-bold text-gray-800">Matched Queries</h3>
-                            <p className="text-sm text-gray-600">Similar query patterns</p>
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-4xl font-bold text-blue-600 mb-2">1,247</div>
-                          <p className="text-sm text-gray-600">queries with similar patterns</p>
-                        </div>
-                      </div>
-
-                      {/* Similarity Score */}
-                      <div className="bg-white rounded-xl shadow-lg p-6">
-                        <div className="flex items-center mb-4">
-                          <div className="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                            <Target className="h-6 w-6 text-purple-600" />
-                          </div>
-                          <div>
-                            <h3 className="text-lg font-bold text-gray-800">Similarity Score</h3>
-                            <p className="text-sm text-gray-600">Query matching accuracy</p>
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-4xl font-bold text-purple-600 mb-2">89%</div>
-                          <p className="text-sm text-gray-600">average similarity match</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Detailed Insights */}
-                    <div className="bg-white rounded-xl shadow-lg p-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-4">📈 Key Insights</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-2">Top Cacheable Queries</h4>
-                          <ul className="space-y-2 text-sm text-gray-600">
-                            <li>• User profile lookups (89% hit rate potential)</li>
-                            <li>• Product catalog searches (76% hit rate potential)</li>
-                            <li>• Category listings (92% hit rate potential)</li>
-                            <li>• Popular content queries (84% hit rate potential)</li>
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-2">Recommendations</h4>
-                          <ul className="space-y-2 text-sm text-gray-600">
-                            <li>• Enable caching for user profiles (high impact)</li>
-                            <li>• Cache product data with 1-hour TTL</li>
-                            <li>• Implement category-level caching</li>
-                            <li>• Consider semantic caching for search queries</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Action Button */}
-                    <div className="text-center mt-8">
-                      <Button
-                        onClick={() => setQuickCreateStep('live-setup')}
-                        className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg mr-4"
-                        size="lg"
-                      >
-                        🚀 Switch to Live Mode
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => setCreationFlow('selection')}
-                        className="px-8 py-3 text-lg"
-                        size="lg"
-                      >
-                        Back to Dashboard
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
 
             {/* Custom Create Screen (Original Form) */}
             {creationFlow === 'custom' && (
