@@ -497,42 +497,124 @@ export default function RedisDashboard() {
                       {/* Mode Selection - Compact */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         {/* Shadow Mode */}
-                        <div className="bg-white rounded-lg shadow border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 p-4">
-                          <div className="flex items-center mb-3">
-                            <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mr-3">
+                        <div className="bg-white rounded-lg shadow border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 p-5">
+                          <div className="flex items-start mb-4">
+                            <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mr-3 flex-shrink-0">
                               <Eye className="h-6 w-6 text-blue-600" />
                             </div>
-                            <div>
-                              <h3 className="text-lg font-bold text-gray-800">Shadow Mode</h3>
-                              <p className="text-sm text-gray-600">Monitor queries, get weekly reports</p>
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-gray-800 mb-1">Shadow Mode</h3>
+                              <p className="text-sm text-blue-700 font-medium mb-2">🛡️ Zero Impact on User Experience</p>
                             </div>
                           </div>
+
+                          <div className="space-y-3 mb-4">
+                            <div className="bg-blue-50 rounded-lg p-3">
+                              <h4 className="font-semibold text-blue-800 text-sm mb-2">Safe Way to Understand LangCache Potential:</h4>
+                              <ul className="text-xs text-blue-700 space-y-1">
+                                <li>• <strong>No performance impact</strong> - Your app runs exactly as today</li>
+                                <li>• <strong>Backend analysis only</strong> - We store query patterns securely</li>
+                                <li>• <strong>What % of queries</strong> could have been served by LangCache</li>
+                                <li>• <strong>Potential cost savings</strong> and performance improvements</li>
+                              </ul>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg p-3">
+                              <h4 className="font-semibold text-blue-800 text-sm mb-2">Weekly Analysis Report Includes:</h4>
+                              <div className="grid grid-cols-2 gap-2 text-xs text-blue-700">
+                                <div>
+                                  <div className="font-medium">📊 Cache Hit Rate</div>
+                                  <div>% of queries cacheable</div>
+                                </div>
+                                <div>
+                                  <div className="font-medium">💰 Cost Savings</div>
+                                  <div>Database load reduction</div>
+                                </div>
+                                <div>
+                                  <div className="font-medium">🔍 Top Queries</div>
+                                  <div>Most repeated patterns</div>
+                                </div>
+                                <div>
+                                  <div className="font-medium">⚡ Performance</div>
+                                  <div>Response time improvements</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="text-center bg-green-50 rounded-lg p-2">
+                              <p className="text-xs text-green-700 font-medium">
+                                💡 Make data-driven decisions before going live
+                              </p>
+                            </div>
+                          </div>
+
                           <Button
                             onClick={() => {setServiceMode('shadow'); setShowReport(false)}}
                             className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                             size="sm"
                           >
-                            {serviceMode === 'shadow' ? '✓ Selected' : 'Choose Shadow Mode'}
+                            {serviceMode === 'shadow' ? '✓ Selected - Shadow Mode Active' : 'Choose Shadow Mode'}
                           </Button>
                         </div>
 
                         {/* Live Mode */}
-                        <div className="bg-white rounded-lg shadow border-2 border-gray-200 hover:border-green-500 transition-all duration-300 p-4">
-                          <div className="flex items-center mb-3">
-                            <div className="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center mr-3">
+                        <div className="bg-white rounded-lg shadow border-2 border-gray-200 hover:border-green-500 transition-all duration-300 p-5">
+                          <div className="flex items-start mb-4">
+                            <div className="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center mr-3 flex-shrink-0">
                               <Zap className="h-6 w-6 text-green-600" />
                             </div>
-                            <div>
-                              <h3 className="text-lg font-bold text-gray-800">Live Mode</h3>
-                              <p className="text-sm text-gray-600">Start caching immediately</p>
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-gray-800 mb-1">Live Mode</h3>
+                              <p className="text-sm text-green-700 font-medium mb-2">⚡ Immediate Performance Benefits</p>
                             </div>
                           </div>
+
+                          <div className="space-y-3 mb-4">
+                            <div className="bg-green-50 rounded-lg p-3">
+                              <h4 className="font-semibold text-green-800 text-sm mb-2">Start Caching Immediately:</h4>
+                              <ul className="text-xs text-green-700 space-y-1">
+                                <li>• <strong>Instant performance boost</strong> - Faster response times</li>
+                                <li>• <strong>Reduced database load</strong> - Lower infrastructure costs</li>
+                                <li>• <strong>Real-time caching</strong> - Queries cached as they happen</li>
+                                <li>• <strong>Production benefits</strong> - Full LangCache capabilities</li>
+                              </ul>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg p-3">
+                              <h4 className="font-semibold text-green-800 text-sm mb-2">Immediate Benefits:</h4>
+                              <div className="grid grid-cols-2 gap-2 text-xs text-green-700">
+                                <div>
+                                  <div className="font-medium">🚀 Speed</div>
+                                  <div>Faster query responses</div>
+                                </div>
+                                <div>
+                                  <div className="font-medium">💰 Savings</div>
+                                  <div>Reduced DB costs</div>
+                                </div>
+                                <div>
+                                  <div className="font-medium">📈 Scale</div>
+                                  <div>Handle more traffic</div>
+                                </div>
+                                <div>
+                                  <div className="font-medium">🎯 Reliability</div>
+                                  <div>Improved uptime</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="text-center bg-orange-50 rounded-lg p-2">
+                              <p className="text-xs text-orange-700 font-medium">
+                                ⚠️ Best if you're confident about your caching strategy
+                              </p>
+                            </div>
+                          </div>
+
                           <Button
                             onClick={() => {setServiceMode('live'); setShowReport(false)}}
                             className="w-full bg-green-600 hover:bg-green-700 text-white"
                             size="sm"
                           >
-                            {serviceMode === 'live' ? '✓ Selected' : 'Choose Live Mode'}
+                            {serviceMode === 'live' ? '✓ Selected - Live Mode Active' : 'Choose Live Mode'}
                           </Button>
                         </div>
                       </div>
